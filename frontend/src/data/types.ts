@@ -32,6 +32,13 @@ export type ActionResult = {
   message: string
 }
 
+// 动作执行上下文：谁（区域/角色）基于哪个版本在操作，用于权限校验与并发控制。
+export type ActionContext = {
+  region?: string
+  role?: string
+  expectedVersion?: number
+}
+
 export type OverviewResult = {
   cards: { label: string; value: number }[]
   modules: { name: string; created: number; pending: number; abnormal: number }[]
