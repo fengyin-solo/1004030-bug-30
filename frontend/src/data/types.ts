@@ -5,7 +5,8 @@ export type EntryRow = {
   status: string
   pending: boolean
   abnormal: boolean
-  [field: string]: string | number | boolean
+  // 排水管网等模块会在行上挂归属、版本、历史等领域字段，值类型不固定。
+  [field: string]: unknown
 }
 
 export type ModuleMeta = {

@@ -1,5 +1,6 @@
 import { MODULE_BY_KEY } from '@/data/modules'
 import { allRows, listRows, resetRows, saveRows } from '@/data/local-store'
+import { drainAbnormalCount, DRAIN_KEY } from '@/data/drain'
 import type { ActionResult, EntryRow, ModuleMeta, OverviewResult, PageResult } from '@/data/types'
 
 // 会写进数据的「往回走」动作：命中就把这条记录标成异常态，看板上能一眼看出来。
@@ -92,7 +93,8 @@ export function loadOverview(): OverviewResult {
       name: meta.name,
       created: entries.length,
       pending: entries.filter((row) => row.pending).length,
-      abnormal: entries.filter((row) => row.abnormal).length,
+      // 排水管网异常量与列表/详情共用同一口径：已封堵是处置完成态，不计异常，封堵后数字不再增加。
+      abnormal: meta.key === DRAIN_KEY ? drainAbnormalCount() : entries.filter((row) => row.abnormal).length,
     }
   })
   const cards = [
